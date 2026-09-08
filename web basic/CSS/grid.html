@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSS Grid Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 30px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    .grid -container
+     {
+      max-width: 900px;
+      margin: 30px auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      background: #ddd;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .item {
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .item:nth-child(2) {
+      background: linear-gradient(135deg, #fa709a, #fee140);
+    }
+
+    .item:nth-child(3) {
+      background: linear-gradient(135deg, #43e97b, #38f9d7);
+    }
+
+    .item:nth-child(4) {
+      background: linear-gradient(135deg, #f6d365, #fda085);
+    }
+
+    .item:nth-child(5) {
+      background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+    }
+
+    .item:nth-child(6) {
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    }
+  </style>
+</head>
+<body>
+  <h2>CSS Grid Layout</h2>
+
+  <div class="grid-container">
+    <div class="item">1</div>
+    <div class="item">2</div>
+    <div class="item">3</div>
+    <div class="item">4</div>
+    <div class="item">5</div>
+    <div class="item">6</div>
+  </div>
+</body>
+</html>

@@ -1,9 +1,9 @@
-function welcome() {
-  return (
-    <div className="welcome-container">
-      <h1>Welcome to the Student Task Management Portal</h1>
-
-    </div>
-  );
+function Welcome() {
+    return (
+        <section className="welcome">
+            <h1>Welcome back, Student!</h1>
+        </section>
+    );
 }
-export default welcome;
+
+export default Welcome;

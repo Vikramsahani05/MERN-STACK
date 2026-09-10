@@ -1,10 +1,10 @@
 /* Enhanced Student Task Portal Frontend */
 
 :root {
-    --bg: #eef4f8;
+    --bg: #1c90dd;
     --panel: #ffffff;
-    --text: #1e293b;
-    --muted: #64748b;
+    --text: #59080d;
+    --muted: #071830;
     --border: #cbd5e1;
     --primary: #173f5f;
     --primary-dark: #102d45;
@@ -89,6 +89,62 @@ main {
     background: var(--bg);
 }
 
+/* Add Task */
+
+.add-task-panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px;
+    margin: 20px 0 26px;
+    box-shadow: 0 10px 22px var(--shadow);
+}
+
+.add-task-panel h2 {
+    margin: 0 0 14px;
+    color: var(--primary);
+    font-size: 24px;
+}
+
+.add-task-form {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.add-task-title,
+.add-task-description {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-family: var(--font);
+    color: var(--muted);
+}
+
+.add-task-title {
+    min-width: min(250px, 260px);
+}
+
+.add-task-description {
+    min-width: min(340px, 420px);
+    resize: vertical;
+}
+
+.add-task-button {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 11px 22px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.add-task-button:hover {
+    background: var(--primary-dark);
+}
+
 /* Stat Cards */
 
 .stats-container {
@@ -137,7 +193,7 @@ main > h2 {
 
 /* Task Cards */
 
-.tasks-container {
+.task-container {
     display: flex;
     flex-direction: column;
     gap: 14px;
@@ -165,6 +221,16 @@ main > h2 {
     margin: 0;
     color: var(--muted);
     font-size: 14px;
+}
+
+.task-card button {
+    background: var(--secondary);
+    color: var(--primary-dark);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
 }
 
 .task-card p:last-child {

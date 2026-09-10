@@ -1,27 +1,56 @@
-import StatCard from "./statcard.jsx";
-import TaskCard from "./taskcard.jsx";
+import StatCard from "./statcard";
+import TaskCard from "./taskcard";
+import { useState } from "react";
+import AddTask from "./addtask";
+import { createTask, nextTaskStatus, formatTimeSpent } from "./taskHelpers";
 
 function Dashboard() {
-    const tasks = [
-        { title: "learn react", description: "understanding react", status: "pending" },
-        { title: "learn redux", description: "understanding redux", status: "completed" },
-        { title: "learn node", description: "understanding node", status: "in-progress" }
-    ];
+    const [tasks, setTasks] = useState([
+        { id: 1, title: "learn react", description: "understanding components", status: "pending", timeSpent: 50 },
+        { id: 2, title: "learn SQL", description: "understanding queries", status: "completed", timeSpent: 40 },
+        { id: 3, title: "learn DSA", description: "understanding", status: "completed", timeSpent: 90 }
+    ]);
+
+    const totalTimeSpent = tasks.reduce((sum, task) => sum + Number(task.timeSpent || 0), 0);
+
+    function toggleTask(id) {
+        const updateTasks = tasks.map((task) => {
+            if (task.id === id) {
+                return {
+                    ...task,
+                    status: nextTaskStatus(task.status)
+                };
+            }
+            return task;
+        });
+
+        setTasks(updateTasks);
+    }
+
+    function handleAddTask(title, description) {
+        const newTask = createTask(title, description);
+        setTasks((currentTasks) => [newTask, ...currentTasks]);
+    }
 
     return (
         <main>
             <div className="stats-container">
-                <StatCard title="Total Tasks" value="10" />
-                <StatCard title="Completed" value="7" />
-                <StatCard title="Pending" value="3" />
-                <StatCard title="Time Spent" value="1 hour" />
+                <StatCard title={"total tasks"} value={tasks.length} />
+                <StatCard title={"completed"} value={tasks.filter((task) => task.status === "completed").length} />
+                <StatCard title={"pending"} value={tasks.filter((task) => task.status === "pending").length} />
+                <StatCard title={"time spending"} value={formatTimeSpent(totalTimeSpent)} />
             </div>
-
+            <AddTask onAdd={handleAddTask} />
             <h2>Recent Tasks</h2>
-
-            <div className="tasks-container">
-                {tasks.map((task, index) => (
-                    <TaskCard key={index} title={task.title} description={task.description} status={task.status} />
+            <div className="task-container">
+                {tasks.map((task) => (
+                    <TaskCard
+                        key={task.id}
+                        title={task.title}
+                        description={task.description}
+                        status={task.status}
+                        onToggle={() => toggleTask(task.id)}
+                    />
                 ))}
             </div>
         </main>

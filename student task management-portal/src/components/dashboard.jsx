@@ -2,13 +2,14 @@ import StatCard from "./statcard";
 import TaskCard from "./taskcard";
 import { useState } from "react";
 import AddTask from "./addtask";
-import { createTask, nextTaskStatus, formatTimeSpent } from "./taskHelpers";
+import { createTask, nextTaskStatus, formatTimeSpent, deleteTask } from "./taskHelpers";
 
 function Dashboard() {
     const [tasks, setTasks] = useState([
-        { id: 1, title: "learn react", description: "understanding components", status: "pending", timeSpent: 50 },
-        { id: 2, title: "learn SQL", description: "understanding queries", status: "completed", timeSpent: 40 },
-        { id: 3, title: "learn DSA", description: "understanding", status: "completed", timeSpent: 90 }
+        {id: 1, title: " learnmongodb", description: "understanding NO SQL", status: "pending", timeSpent: 50 },
+        {id: 2 , title: "learn react", description: "understanding components", status: "pending", timeSpent: 50 },
+        {id: 3, title: "learn SQL", description: "understanding queries", status: "completed", timeSpent: 40 },
+        {id: 4, title: "learn DSA", description: "understanding", status: "completed", timeSpent: 90 }
     ]);
 
     const totalTimeSpent = tasks.reduce((sum, task) => sum + Number(task.timeSpent || 0), 0);
@@ -25,6 +26,10 @@ function Dashboard() {
         });
 
         setTasks(updateTasks);
+    }
+
+    function removeTask(id) {
+        setTasks((currentTasks) => deleteTask(currentTasks, id));
     }
 
     function handleAddTask(title, description) {
@@ -50,6 +55,7 @@ function Dashboard() {
                         description={task.description}
                         status={task.status}
                         onToggle={() => toggleTask(task.id)}
+                        onDelete={() => removeTask(task.id)}
                     />
                 ))}
             </div>

@@ -1,16 +1,18 @@
 /* Enhanced Student Task Portal Frontend */
 
 :root {
-    --bg: #1c90dd;
-    --panel: #ffffff;
-    --text: #59080d;
-    --muted: #071830;
-    --border: #cbd5e1;
-    --primary: #173f5f;
-    --primary-dark: #102d45;
-    --secondary: #ffd166;
-    --accent: #3ab795;
-    --shadow: rgba(15, 23, 42, 0.12);
+    --bg: #dde7f3;
+    --panel: #eef4f8;
+    --text: #344054;
+    --muted: #586575;
+    --border: #d9e3ee;
+    --primary: #496583;
+    --primary-dark: #324d6b;
+    --secondary: #ffb86b;
+    --accent: #78c3a9;
+    --danger: #d46a72;
+    --shadow: rgba(92, 112, 135, 0.22);
+    --shadow-soft: rgba(255, 255, 255, 0.95);
     --font: "Inter", "Segoe UI", Arial, sans-serif;
 }
 
@@ -32,13 +34,14 @@ body {
 /* Navbar */
 
 nav {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: #fff;
+    background: var(--panel);
+    color: var(--primary);
     padding: 18px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 4px 16px var(--shadow);
+    box-shadow: 9px 9px 16px var(--shadow), -9px -9px 16px var(--shadow-soft);
+    border-radius: 0 0 24px 24px;
 }
 
 nav h2 {
@@ -58,7 +61,7 @@ nav h2 {
     cursor: pointer;
     font-size: 15px;
     font-weight: 600;
-    color: #dcebf4;
+    color: var(--primary);
     transition: color 0.2s ease, transform 0.2s ease;
 }
 
@@ -71,8 +74,9 @@ nav h2 {
 
 .welcome {
     padding: 40px 40px 30px;
-    background: linear-gradient(120deg, #eef8f7, #eef4ff);
+    background: var(--panel);
     border-bottom: 1px solid var(--border);
+    box-shadow: inset 5px 5px 10px #d4dce8, inset -5px -5px 10px #ffffff;
 }
 
 .welcome h1 {
@@ -94,10 +98,10 @@ main {
 .add-task-panel {
     background: var(--panel);
     border: 1px solid var(--border);
-    border-radius: 16px;
+    border-radius: 24px;
     padding: 22px;
     margin: 20px 0 26px;
-    box-shadow: 0 10px 22px var(--shadow);
+    box-shadow: 10px 10px 24px var(--shadow), -10px -10px 24px var(--shadow-soft);
 }
 
 .add-task-panel h2 {
@@ -115,11 +119,14 @@ main {
 
 .add-task-title,
 .add-task-description {
-    border: 1px solid var(--border);
-    border-radius: 10px;
+    border: none;
+    outline: none;
+    background: var(--panel);
+    border-radius: 14px;
     padding: 10px 12px;
     font-family: var(--font);
     color: var(--muted);
+    box-shadow: inset 5px 5px 10px var(--shadow), inset -5px -5px 10px var(--shadow-soft);
 }
 
 .add-task-title {
@@ -135,10 +142,11 @@ main {
     background: var(--primary);
     color: #fff;
     border: none;
-    border-radius: 10px;
+    border-radius: 14px;
     padding: 11px 22px;
     font-weight: 700;
     cursor: pointer;
+    box-shadow: 5px 5px 10px var(--shadow), -5px -5px 10px var(--shadow-soft);
 }
 
 .add-task-button:hover {
@@ -157,16 +165,16 @@ main {
 .stat-card {
     background: var(--panel);
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: 16px;
     width: min(180px, 100%);
     padding: 20px;
-    box-shadow: 0 8px 14px var(--shadow);
+    box-shadow: 8px 8px 16px var(--shadow), -8px -8px 16px var(--shadow-soft);
     transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .stat-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 22px var(--shadow);
+    box-shadow: 10px 10px 20px var(--shadow), -10px -10px 20px var(--shadow-soft);
 }
 
 .stat-card h3 {
@@ -203,12 +211,17 @@ main > h2 {
     background: var(--panel);
     border: 1px solid var(--border);
     border-left: 4px solid var(--accent);
-    border-radius: 14px;
+    border-radius: 18px;
     padding: 18px 22px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 6px 16px var(--shadow);
+    gap: 16px;
+    box-shadow: 8px 8px 14px var(--shadow), -8px -8px 14px var(--shadow-soft);
+}
+
+.task-card-content {
+    flex: 1;
 }
 
 .task-card h3 {
@@ -223,19 +236,54 @@ main > h2 {
     font-size: 14px;
 }
 
-.task-card button {
-    background: var(--secondary);
-    color: var(--primary-dark);
-    border-radius: 8px;
-    padding: 8px 14px;
-    font-weight: 700;
+.task-card-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.task-toggle-button,
+.task-delete-button {
     border: none;
+    color: var(--primary-dark);
     cursor: pointer;
 }
 
-.task-card p:last-child {
-    color: var(--accent);
+.task-toggle-button {
+    background: var(--secondary);
+    border-radius: 10px;
+    padding: 8px 14px;
     font-weight: 700;
+    box-shadow: 4px 4px 7px var(--shadow), -4px -4px 7px var(--shadow-soft);
+}
+
+.task-delete-button {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--panel);
+    color: var(--danger);
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 5px 5px 10px var(--shadow), -5px -5px 10px var(--shadow-soft);
+}
+
+.task-delete-button:hover {
+    color: #fff;
+    background: var(--danger);
+}
+
+.delete-icon {
+    font-size: 30px;
+    line-height: 1;
+}
+
+.task-status {
+    color: var(--accent) !important;
+    font-weight: 700;
+    margin-top: 8px !important;
 }
 
 .task-card:hover {

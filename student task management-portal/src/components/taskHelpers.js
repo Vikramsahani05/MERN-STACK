@@ -21,3 +21,7 @@ export function createTask(title, description = '', timeSpent = 0) {
     timeSpent
   };
 }
+
+export function deleteTask(tasks, taskId) {
+  return tasks.filter((task) => task.id !== taskId);
+}

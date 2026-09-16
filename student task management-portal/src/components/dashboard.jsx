@@ -1,42 +1,10 @@
 import StatCard from "./statcard";
 import TaskCard from "./taskcard";
-import { useState } from "react";
 import AddTask from "./addtask";
-import { createTask, nextTaskStatus, formatTimeSpent, deleteTask } from "./taskHelpers";
+import { formatTimeSpent } from "./taskHelpers";
 
-function Dashboard() {
-    const [tasks, setTasks] = useState([
-        {id: 1, title: " learnmongodb", description: "understanding NO SQL", status: "pending", timeSpent: 50 },
-        {id: 2 , title: "learn react", description: "understanding components", status: "pending", timeSpent: 50 },
-        {id: 3, title: "learn SQL", description: "understanding queries", status: "completed", timeSpent: 40 },
-        {id: 4, title: "learn DSA", description: "understanding", status: "completed", timeSpent: 90 }
-    ]);
-
+function Dashboard({ tasks = [], onAdd = () => {}, onToggle = () => {}, onDelete = () => {} }) {
     const totalTimeSpent = tasks.reduce((sum, task) => sum + Number(task.timeSpent || 0), 0);
-
-    function toggleTask(id) {
-        const updateTasks = tasks.map((task) => {
-            if (task.id === id) {
-                return {
-                    ...task,
-                    status: nextTaskStatus(task.status)
-                };
-            }
-            return task;
-        });
-
-        setTasks(updateTasks);
-    }
-
-    function removeTask(id) {
-        setTasks((currentTasks) => deleteTask(currentTasks, id));
-    }
-
-    function handleAddTask(title, description) {
-        const newTask = createTask(title, description);
-        setTasks((currentTasks) => [newTask, ...currentTasks]);
-    }
-
     return (
         <main>
             <div className="stats-container">
@@ -45,17 +13,18 @@ function Dashboard() {
                 <StatCard title={"pending"} value={tasks.filter((task) => task.status === "pending").length} />
                 <StatCard title={"time spending"} value={formatTimeSpent(totalTimeSpent)} />
             </div>
-            <AddTask onAdd={handleAddTask} />
+            <AddTask onAdd={onAdd} />
             <h2>Recent Tasks</h2>
             <div className="task-container">
                 {tasks.map((task) => (
                     <TaskCard
                         key={task.id}
+                        id={task.id}
                         title={task.title}
                         description={task.description}
                         status={task.status}
-                        onToggle={() => toggleTask(task.id)}
-                        onDelete={() => removeTask(task.id)}
+                        onToggle={() => onToggle(task.id)}
+                        onDelete={() => onDelete(task.id)}
                     />
                 ))}
             </div>

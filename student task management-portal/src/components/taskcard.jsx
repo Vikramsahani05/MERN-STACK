@@ -6,7 +6,7 @@ function TaskCard(props) {
             <div className="task-card-content">
                 <h3>{props.title}</h3>
                 <p>{props.description}</p>
-                <p className="task-status"> {props.status}</p>
+                <p className={`task-status status-${props.status}`}>{props.status}</p>
             </div>
             <div className="task-card-actions">
                 <button className="task-toggle-button" onClick={props.onToggle}>Change Status</button>

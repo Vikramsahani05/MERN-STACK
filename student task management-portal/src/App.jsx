@@ -13,16 +13,48 @@ function App() {
     { id: 3, title: "learn DSA", description: "understanding", status: "completed", timeSpent: 90 }
   ]);
 
-  function toggleTask(id) {
-    setTasks((currentTasks) =>
-      currentTasks.map((task) =>
-        task.id === id ? { ...task, status: nextTaskStatus(task.status) } : task
-      )
-    );
+  async function toggleTask(id) {
+    const task = tasks.find((currentTask) => currentTask.id === id);
+    if (!task) return;
+
+    const status = nextTaskStatus(task.status);
+
+    try {
+      const response = await fetch(`/api/tasks/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Task update failed: ${response.status}`);
+      }
+
+      const updatedTask = await response.json();
+      setTasks((currentTasks) =>
+        currentTasks.map((currentTask) =>
+          currentTask.id === id ? { ...currentTask, ...updatedTask } : currentTask
+        )
+      );
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
   }
 
-  function removeTask(id) {
-    setTasks((currentTasks) => deleteTask(currentTasks, id));
+  async function removeTask(id) {
+    try {
+      const response = await fetch(`/api/tasks/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error(`Task deletion failed: ${response.status}`);
+      }
+
+      setTasks((currentTasks) => deleteTask(currentTasks, id));
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
   }
 
   function handleAddTask(title, description) {

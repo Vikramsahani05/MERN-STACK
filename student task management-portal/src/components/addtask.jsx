@@ -1,42 +1,38 @@
 import { useState } from "react";
 
-function AddTask(props) {
+function AddTask({ onAdd }){
     const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-
-    function handleAdd() {
+    const[description, setDescription] = useState("");
+    
+    function handleSubmit(e){
+        e.preventDefault();
         const cleanTitle = title.trim();
-        const cleanDescription = description.trim();
-
         if (!cleanTitle) return;
-
-        props.onAdd?.(cleanTitle, cleanDescription);
+        onAdd(cleanTitle, description.trim());
         setTitle("");
         setDescription("");
     }
-
+    
     return (
-        <div className="add-task-panel">
+        <div>
             <h2>Add Task</h2>
-            <div className="add-task-form">
-                <input
-                    className="add-task-title"
-                    type="text"
+            <form onSubmit={handleSubmit}>
+                <label>Add Title</label>
+                <input 
+                    type="text" 
                     value={title}
-                    onChange={(event) => setTitle(event.target.value)}
-                    placeholder="Task title"
+                    onChange={(e)=>setTitle(e.target.value)}
                 />
-                <textarea
-                    className="add-task-description"
+                <label>Add Description</label>
+                <input 
+                    type="text" 
                     value={description}
-                    onChange={(event) => setDescription(event.target.value)}
-                    placeholder="Task description"
-                    rows="3"
+                    onChange={(e)=>setDescription(e.target.value)}
                 />
-                <button className="add-task-button" onClick={handleAdd}>Add</button>
-            </div>
+                <br /><br />
+                <button type="submit">Add Task</button>
+            </form>
         </div>
     );
 }
-
 export default AddTask;

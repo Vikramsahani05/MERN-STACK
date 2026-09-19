@@ -1,20 +1,40 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/navbar.jsx";
 import Dashboard from "./components/dashboard.jsx";
 import TaskDetails from "./components/task details.jsx";
 import { createTask, nextTaskStatus, deleteTask } from "./components/taskHelpers.js";
 
+function getTaskId(task) {
+  return task.id ?? task._id;
+}
+
 function App() {
-  const [tasks, setTasks] = useState([
-    { id: 1, title: "learn react", description: "understanding components", status: "pending", timeSpent: 50 },
-    { id: 2, title: "learn SQL", description: "understanding queries", status: "completed", timeSpent: 40 },
-    { id: 3, title: "learn DSA", description: "understanding", status: "completed", timeSpent: 90 }
-  ]);
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetch("/api/tasks")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Failed to load tasks: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (!cancelled) setTasks(data);
+      })
+      .catch((error) => console.error("Error loading tasks:", error));
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   async function toggleTask(id) {
-    const task = tasks.find((currentTask) => currentTask.id === id);
+    const task = tasks.find((currentTask) => getTaskId(currentTask) === id);
     if (!task) return;
 
     const status = nextTaskStatus(task.status);
@@ -33,7 +53,7 @@ function App() {
       const updatedTask = await response.json();
       setTasks((currentTasks) =>
         currentTasks.map((currentTask) =>
-          currentTask.id === id ? { ...currentTask, ...updatedTask } : currentTask
+          getTaskId(currentTask) === id ? { ...currentTask, ...updatedTask } : currentTask
         )
       );
     } catch (error) {
@@ -51,15 +71,31 @@ function App() {
         throw new Error(`Task deletion failed: ${response.status}`);
       }
 
-      setTasks((currentTasks) => deleteTask(currentTasks, id));
+      setTasks((currentTasks) => deleteTask(currentTasks, id, getTaskId));
     } catch (error) {
       console.error("Error deleting task:", error);
     }
   }
 
-  function handleAddTask(title, description) {
+  async function handleAddTask(title, description) {
     const newTask = createTask(title, description);
-    setTasks((currentTasks) => [newTask, ...currentTasks]);
+
+    try {
+      const response = await fetch("/api/tasks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newTask),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Task creation failed: ${response.status}`);
+      }
+
+      const savedTask = await response.json();
+      setTasks((currentTasks) => [savedTask, ...currentTasks]);
+    } catch (error) {
+      console.error("Error creating task:", error);
+    }
   }
 
   return (

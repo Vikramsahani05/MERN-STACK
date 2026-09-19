@@ -1,21 +1,22 @@
 import { Link } from "react-router-dom";
 
 function TaskCard(props) {
-    return(
+    const status = props.status?.toLowerCase() || "pending";
+
+    return (
         <div className="task-card">
-            <div className="task-card-content">
-                <h3>{props.title}</h3>
-                <p>{props.description}</p>
-                <p className={`task-status status-${props.status}`}>{props.status}</p>
-            </div>
-            <div className="task-card-actions">
-                <button className="task-toggle-button" onClick={props.onToggle}>Change Status</button>
-                <Link className="task-details-link" to={`/tasks/${props.id}`}>View Details</Link>
-                <button className="task-delete-button" onClick={props.onDelete} aria-label="Delete task">
-                    <span className="delete-icon" title="Delete task">×</span>
-                </button>
-            </div>
+            <h3>{props.title}</h3>
+            <p>{props.description || "No description added."}</p>
+            <p className={`task-status status-${status}`}>{status}</p>
+            <button type="button" onClick={props.onToggle}>
+                {status === "completed" ? "Reopen task" : "Mark complete"}
+            </button>
+            <button type="button" onClick={props.onDelete}>
+                Delete
+            </button>
+            <Link to={`/tasks/${props.id}`}>View Details</Link>
         </div>
     );
 }
+
 export default TaskCard;

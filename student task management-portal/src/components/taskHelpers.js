@@ -1,5 +1,5 @@
 export function nextTaskStatus(status) {
-  return status === 'pending' ? 'completed' : 'pending';
+  return status?.toLowerCase() === 'pending' ? 'completed' : 'pending';
 }
 
 export function formatTimeSpent(totalMinutes) {
@@ -22,6 +22,6 @@ export function createTask(title, description = '', timeSpent = 0) {
   };
 }
 
-export function deleteTask(tasks, taskId) {
-  return tasks.filter((task) => task.id !== taskId);
+export function deleteTask(tasks, taskId, getTaskId = (task) => task.id) {
+  return tasks.filter((task) => getTaskId(task) !== taskId);
 }
